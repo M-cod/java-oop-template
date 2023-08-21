@@ -5,7 +5,7 @@ import com.epam.izh.rd.online.entity.Book;
 import com.epam.izh.rd.online.entity.SchoolBook;
 import com.epam.izh.rd.online.repository.BookRepository;
 
-public class SimpleSchoolBookService implements BookService{
+public class SimpleSchoolBookService implements BookService<SchoolBook>{
 
     private BookRepository<SchoolBook> schoolBookBookRepository;
     private AuthorService authorService;
@@ -18,19 +18,9 @@ public class SimpleSchoolBookService implements BookService{
         this.authorService = authorService;
     }
 
-    /*@Override
+    @Override
     public boolean save(SchoolBook book) {
         Author author = authorService.findByFullName(book.getAuthorName(), book.getAuthorLastName());
-        if (author != null){
-            schoolBookBookRepository.save(book);
-            return true;
-        }
-        return false;
-    }*/
-
-    @Override
-    public boolean save(Book book) {
-        Author author = authorService.findByFullName((SchoolBook)book.getAuthorName(), book.getAuthorLastName());
         if (author != null){
             schoolBookBookRepository.save(book);
             return true;
@@ -45,12 +35,12 @@ public class SimpleSchoolBookService implements BookService{
 
     @Override
     public int getNumberOfBooksByName(String name) {
-        return 0;
+        return schoolBookBookRepository.findByName(name).length;
     }
 
     @Override
     public boolean removeByName(String name) {
-        return false;
+        return schoolBookBookRepository.removeByName(name);
     }
 
     @Override
@@ -60,6 +50,12 @@ public class SimpleSchoolBookService implements BookService{
 
     @Override
     public Author findAuthorByBookName(String name) {
-        return null;
+        SchoolBook[] schoolBooks = schoolBookBookRepository.findByName(name);
+        if (schoolBooks.length == 0) {
+            return null;
+        }
+        Author author = authorService.findByFullName(schoolBooks[0].getAuthorName(), schoolBooks[0].getAuthorLastName());
+        return author != null ? author : null;
     }
+
 }

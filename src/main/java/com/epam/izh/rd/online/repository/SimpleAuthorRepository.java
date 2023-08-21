@@ -10,13 +10,12 @@ public class SimpleAuthorRepository implements AuthorRepository {
 
     @Override
     public boolean save(Author author) {
-        Author authorNotNull = findByFullName(author.getName(), author.getLastName());
-        if (authorNotNull == null) {
-            if (authors.length == 0) {
+        if (findByFullName(author.getName(), author.getLastName()) == null) {
+            if (count() == 0) {
                 authors = new Author[]{author};
             } else {
-                authors = Arrays.copyOf(authors, authors.length + 1);
-                authors[authors.length - 1] = author;
+                authors = Arrays.copyOf(authors, count() + 1);
+                authors[count() - 1] = author;
             }
             return true;
         }
@@ -35,11 +34,19 @@ public class SimpleAuthorRepository implements AuthorRepository {
 
     @Override
     public boolean remove(Author author) {
-        Author authorNotNull = findByFullName(author.getName(), author.getLastName());
-        if (authorNotNull != null) {
-            for (int i = 0; i < authors.length; i++) {
-                if (authors[i].equals(author)) {
-                    authors = Arrays.copyOfRange(authors, i, authors.length);
+        if (findByFullName(author.getName(), author.getLastName()) != null) {
+            Author[] newAutor = Arrays.copyOf(authors, count());
+            for (int i = 0; i < newAutor.length; i++) {
+                if (newAutor[i].equals(author)) {
+                    newAutor[i] = null;
+                    break;
+                }
+            }
+            authors = new Author[count() - 1];
+            for (int i = 0, j = 0; i < newAutor.length; i++){
+                if (newAutor[i] != null){
+                    authors[j] = newAutor[i];
+                    j++;
                 }
             }
             return true;
