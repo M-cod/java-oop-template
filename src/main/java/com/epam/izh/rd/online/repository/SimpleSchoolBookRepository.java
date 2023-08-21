@@ -23,7 +23,7 @@ public class SimpleSchoolBookRepository implements BookRepository<SchoolBook> {
         boolean flag = false;
         SchoolBook[] newSchoolBook = new SchoolBook[count()];
         for (int i = 0, j = 0; i < count(); i++) {
-            if (schoolBooks[i].getName() == name) {
+            if (schoolBooks[i].getName().equals(name)) {
                 newSchoolBook[j] = schoolBooks[i];
                 j++;
                 flag = true;
@@ -38,7 +38,7 @@ public class SimpleSchoolBookRepository implements BookRepository<SchoolBook> {
             SchoolBook[] newSchoolBook = Arrays.copyOf(schoolBooks, count());
             int count = 0;
             for (int i = 0; i < newSchoolBook.length; i++) {
-                if (newSchoolBook[i].getName() == name) {
+                if (newSchoolBook[i].getName().equals(name)) {
                     newSchoolBook[i] = null;
                     count++;
                 }

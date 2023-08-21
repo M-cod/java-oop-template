@@ -25,7 +25,7 @@ public class SimpleAuthorRepository implements AuthorRepository {
     @Override
     public Author findByFullName(String name, String lastname) {
         for (Author author : authors) {
-            if ((author.getName() == name) && (author.getLastName() == lastname)) {
+            if ((author.getName().equals(name)) && (author.getLastName().equals(lastname))) {
                 return author;
             }
         }

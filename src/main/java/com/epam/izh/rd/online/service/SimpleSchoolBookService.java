@@ -54,8 +54,7 @@ public class SimpleSchoolBookService implements BookService<SchoolBook>{
         if (schoolBooks.length == 0) {
             return null;
         }
-        Author author = authorService.findByFullName(schoolBooks[0].getAuthorName(), schoolBooks[0].getAuthorLastName());
-        return author != null ? author : null;
+        return authorService.findByFullName(schoolBooks[0].getAuthorName(), schoolBooks[0].getAuthorLastName());
     }
 
 }
